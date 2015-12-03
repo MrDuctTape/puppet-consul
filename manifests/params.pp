@@ -6,7 +6,6 @@
 class consul::params {
 
   $install_method        = 'url'
-  $package_name          = 'consul'
   $package_ensure        = 'latest'
   $download_url_base     = 'https://releases.hashicorp.com/consul/'
   $download_extension    = 'zip'
@@ -17,18 +16,24 @@ class consul::params {
   $version               = '0.5.2'
   $config_mode           = '0660'
 
-  case $::architecture {
-    'x86_64', 'amd64': { $arch = 'amd64' }
-    'i386':            { $arch = '386'   }
-    /^arm.*/:          { $arch = 'arm'   }
-    default:           {
-      fail("Unsupported kernel architecture: ${::architecture}")
+  if $::operatingsystem != 'windows' {
+    case $::architecture {
+      'x86_64', 'amd64': { $arch = 'amd64' }
+      'i386':            { $arch = '386'   }
+      default:           {
+        fail("Unsupported kernel architecture: ${::architecture}")
+      }
     }
+    $os = downcase($::kernel)
   }
 
-  $os = downcase($::kernel)
-
-  if $::operatingsystem == 'Ubuntu' {
+  if $::operatingsystem == 'windows' {
+    $package_target = "C:/Consul"
+    $package_name   = '_windows_386.zip'
+    $service_name   = 'Consul'
+    $executable     = "C:/Consul"
+    $init_style = 'windows'
+  } elsif $::operatingsystem == 'Ubuntu' {
     if versioncmp($::operatingsystemrelease, '8.04') < 1 {
       $init_style = 'debian'
     } elsif versioncmp($::operatingsystemrelease, '15.04') < 0 {
@@ -55,19 +60,13 @@ class consul::params {
       $init_style = 'systemd'
     }
   } elsif $::operatingsystem == 'Archlinux' {
-    $init_style = 'systemd'
-  } elsif $::operatingsystem == 'OpenSuSE' {
-    $init_style = 'systemd'
-  } elsif $::operatingsystem =~ /SLE[SD]/ {
-    if versioncmp($::operatingsystemrelease, '12.0') < 0 {
-      $init_style = 'sles'
-    } else {
-      $init_style = 'systemd'
-    }
+    $init_style     = 'systemd'
+  } elsif $::operatingsystem == 'SLES' {
+    $init_style     = 'sles'
   } elsif $::operatingsystem == 'Darwin' {
-    $init_style = 'launchd'
+    $init_style     = 'launchd'
   } elsif $::operatingsystem == 'Amazon' {
-    $init_style = 'sysv'
+    $init_style     = 'sysv'
   } else {
     $init_style = undef
   }
