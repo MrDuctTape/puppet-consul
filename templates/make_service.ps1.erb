@@ -1,7 +1,7 @@
 
 
 ## vars:
-$consulTargetDir = "<%= scope['consul::params::package_target'] %>" -replace "/", "\"
+$consulTargetDir = "<%= scope['consul::bin_dir'] %>" -replace "/", "\"
 $consulExe = "`"" + $consulTargetDir + "\consul.exe`""
 $consulConfig = "`"`"agent -config-dir=`"<%= scope['consul::params::package_target'] %>" + "\config\`"`"`"" -replace "/", "\"
 $consulInstString = $consulExe + " " + $consulConfig
