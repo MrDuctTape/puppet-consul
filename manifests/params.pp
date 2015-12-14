@@ -20,6 +20,8 @@ class consul::params {
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }
     'i386':            { $arch = '386'   }
+# 0.6.0 and windows presents an odd conundrum, so we will stick with 386 for now:
+    'x64':             { $arch = '386'   }
     default:           {
       fail("Unsupported kernel architecture: ${::architecture}")
     }
