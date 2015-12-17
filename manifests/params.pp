@@ -19,9 +19,9 @@ class consul::params {
 
 # 0.6.0 introduced a 64-bit version, so we need to differentiate:
   if (versioncmp($::consul::version, '0.6.0') < 0) {
-    $win_arch = '386',
+    $win_arch = '386'
   } else {
-    $win_arch = 'amd64',
+    $win_arch = 'amd64'
   }
 
 
