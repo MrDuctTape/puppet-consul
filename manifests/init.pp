@@ -72,7 +72,7 @@ class consul (
   $ui_download_extension = $consul::params::ui_download_extension,
   $ui_package_name       = $consul::params::ui_package_name,
   $ui_package_ensure     = $consul::params::ui_package_ensure,
-  $config_dir            = '/etc/consul',
+  $config_dir            = $consul::params::config_dir,
   $extra_options         = '',
   $config_hash           = {},
   $config_defaults       = {},

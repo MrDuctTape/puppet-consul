@@ -37,6 +37,15 @@ class consul::params {
 
   $os = downcase($::kernel)
 
+  case $::operatingsystem {
+    'windows': {
+      $config_dir = 'C:/Consul/config'
+    }
+    default: {
+      $config_dir = '/etc/consul'
+    }
+  }
+
   if $::operatingsystem == 'Ubuntu' {
     if versioncmp($::operatingsystemrelease, '8.04') < 1 {
       $init_style = 'debian'
