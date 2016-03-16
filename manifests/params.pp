@@ -72,7 +72,6 @@ class consul::params {
   } elsif $::operatingsystem == 'Amazon' {
     $init_style = 'sysv'
   } elsif $::operatingsystem == 'windows' {
-    $package_target = "C:/Consul"
     $service_name = 'Consul'
     $init_style = 'windows'
   } else {

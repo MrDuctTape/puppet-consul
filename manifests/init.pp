@@ -175,7 +175,6 @@ class consul (
       notify      => $notify_service,
     } ->
     class { 'consul::windows_service':
-      package_target => $consul::params::package_target,
       service_name   => $consul::params::service_name,
     } ->
     anchor {'consul_last': }
