@@ -57,7 +57,7 @@ class consul (
   $purge_config_dir      = true,
   $group                 = 'consul',
   $join_wan              = false,
-  $bin_dir               = '/usr/local/bin',
+  $bin_dir               = $consul::params::bin_dir,
   $arch                  = $consul::params::arch,
   $version               = $consul::params::version,
   $install_method        = $consul::params::install_method,
@@ -167,8 +167,7 @@ class consul (
 # And we'll have to modify a few things here as well:
   if $::operatingsystem == 'windows' {
     anchor {'consul_first': } ->
-    class { 'consul::windows_agent':
-    } ->
+    class { 'consul::windows_agent': } ->
     class { 'consul::config':
       config_hash => $config_hash_real,
       purge       => $purge_config_dir,

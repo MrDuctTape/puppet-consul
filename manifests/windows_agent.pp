@@ -16,7 +16,7 @@ class consul::windows_agent(
     content => template('consul/download_unpack.ps1.erb'),
   } ->
   exec { 'download_unpack':
-    cwd         => ${consul::bin_dir},
+    cwd         => "${consul::bin_dir}",
     command     => "${consul::bin_dir}/scripts/download_unpack.ps1",
     subscribe   => File["${consul::bin_dir}/scripts/download_unpack.ps1"],
     refreshonly => true,

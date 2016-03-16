@@ -24,7 +24,6 @@ class consul::params {
     $win_arch = 'amd64'
   }
 
-
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64'   }
     'i386':            { $arch = '386'     }
@@ -39,9 +38,11 @@ class consul::params {
 
   case $::operatingsystem {
     'windows': {
+      $bin_dir = 'C:/Consul'
       $config_dir = 'C:/Consul/config'
     }
     default: {
+      $bin_dir = '/usr/local/bin'
       $config_dir = '/etc/consul'
     }
   }
