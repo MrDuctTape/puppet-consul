@@ -1,9 +1,7 @@
-class consul::windows_agent(
-) {
+class consul::windows_agent {
 
   file {[
     "${consul::bin_dir}",
-    "${consul::bin_dir}/config",
     "${consul::bin_dir}/data",
     "${consul::bin_dir}/scripts",
     "${consul::bin_dir}/helper",
