@@ -1,6 +1,7 @@
 class consul::windows_service(
   $service_name   = $consul::params::service_name,
   $package_target = $consul::params::package_target,
+  $nssm_source    = "puppet:///modules/${module_name}/nssm64/nssm.exe"
 ) {
   file { "${package_target}/scripts/do_windows_path.ps1":
     ensure  => 'present',
@@ -12,7 +13,7 @@ class consul::windows_service(
   } ->
   file { "${package_target}/helper/nssm.exe":
     ensure             => 'present',
-    source             => "puppet:///modules/consul/nssm64/nssm.exe",
+    source             => ${nssm_source},
     source_permissions => 'ignore',
   } ->
 # we must run path mods separately, because Windows shells do not self-update:
