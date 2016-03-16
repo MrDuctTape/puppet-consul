@@ -12,7 +12,7 @@ class consul::windows_service(
   } ->
   file { "${consul::bin_dir}/helper/nssm.exe":
     ensure             => 'present',
-    source             => ${nssm_source},
+    source             => "${nssm_source}",
     source_permissions => 'ignore',
   } ->
 # we must run path mods separately, because Windows shells do not self-update:
