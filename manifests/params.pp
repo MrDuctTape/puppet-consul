@@ -17,18 +17,18 @@ class consul::params {
   $version               = '0.5.2'
   $config_mode           = '0660'
 
-  # 0.6.0 introduced a 64-bit version, so we need to differentiate:
-  if (versioncmp($::consul::version, '0.6.0') < 0) {
-    $win_arch = '386'
-  } else {
-    $win_arch = 'amd64'
-  }
-
   case $::architecture {
     'x86_64', 'amd64': { $arch = 'amd64' }
     'i386':            { $arch = '386'   }
     /^arm.*/:          { $arch = 'arm'   }
-    'x64':             { $arch = $win_arch }
+    'x64':             {
+      # 0.6.0 introduced a 64-bit version, so we need to differentiate:
+      if (versioncmp($::consul::version, '0.6.0') < 0) {
+        $arch = '386'
+      } else {
+        $arch = 'amd64'
+      }
+    }
     default:           {
       fail("Unsupported kernel architecture: ${::architecture}")
     }
