@@ -15,27 +15,27 @@ class consul::install {
 
   case $consul::install_method {
     'url': {
-      include staging
-      staging::file { "consul-${consul::version}.${consul::download_extension}":
+      include '::archive'
+      archive { "consul-${consul::version}.${consul::download_extension}":
         source => $consul::real_download_url,
-      } ->
-      file { "${::staging::path}/consul-${consul::version}":
-        ensure => directory,
-      } ->
-      staging::extract { "consul-${consul::version}.${consul::download_extension}":
-        target  => "${::staging::path}/consul-${consul::version}",
-        creates => "${::staging::path}/consul-${consul::version}/consul",
-      } ->
-      file {
-        "${::staging::path}/consul-${consul::version}/consul":
-          owner => 'root',
-          group => 0, # 0 instead of root because OS X uses "wheel".
-          mode  => '0555';
-        "${consul::bin_dir}/consul":
-          ensure => link,
-          notify => $consul::notify_service,
-          target => "${::staging::path}/consul-${consul::version}/consul";
       }
+      #file { "${::staging::path}/consul-${consul::version}":
+      #  ensure => directory,
+      #}
+      #staging::extract { "consul-${consul::version}.${consul::download_extension}":
+      #  target  => "${::staging::path}/consul-${consul::version}",
+      #  creates => "${::staging::path}/consul-${consul::version}/consul",
+      #} ->
+      #file {
+      #  "${::staging::path}/consul-${consul::version}/consul":
+      #    owner => 'root',
+      #    group => 0, # 0 instead of root because OS X uses "wheel".
+      #    mode  => '0555';
+      #  "${consul::bin_dir}/consul":
+      #    ensure => link,
+      #    notify => $consul::notify_service,
+      #    target => "${::staging::path}/consul-${consul::version}/consul";
+      #}
 
       if ($consul::ui_dir and $consul::data_dir) {
 
@@ -48,21 +48,21 @@ class consul::install {
           $ui_symlink_target = "${consul::data_dir}/${consul::version}_web_ui"
         }
 
-        file { "${consul::data_dir}/${consul::version}_web_ui":
-          ensure => 'directory',
-          owner  => 'root',
-          group  => 0, # 0 instead of root because OS X uses "wheel".
-          mode   => '0755',
-        } ->
-        staging::deploy { "consul_web_ui-${consul::version}.zip":
-          source  => $consul::real_ui_download_url,
-          target  => "${consul::data_dir}/${consul::version}_web_ui",
-          creates => $staging_creates,
-        } ->
-        file { $consul::ui_dir:
-          ensure => 'symlink',
-          target => $ui_symlink_target,
-        }
+        #file { "${consul::data_dir}/${consul::version}_web_ui":
+        #  ensure => 'directory',
+        #  owner  => 'root',
+        #  group  => 0, # 0 instead of root because OS X uses "wheel".
+        #  mode   => '0755',
+        #} ->
+        #staging::deploy { "consul_web_ui-${consul::version}.zip":
+        #  source  => $consul::real_ui_download_url,
+        #  target  => "${consul::data_dir}/${consul::version}_web_ui",
+        #  creates => $staging_creates,
+        #} ->
+        #file { $consul::ui_dir:
+        #  ensure => 'symlink',
+        #  target => $ui_symlink_target,
+        #}
       }
     }
     'package': {
