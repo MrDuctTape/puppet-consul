@@ -168,6 +168,7 @@ class consul (
   if $::operatingsystem == 'windows' {
     anchor {'consul_first': } ->
     class { 'consul::windows_agent': } ->
+    class { 'consul::install': } ->
     class { 'consul::config':
       config_hash => $config_hash_real,
       purge       => $purge_config_dir,
