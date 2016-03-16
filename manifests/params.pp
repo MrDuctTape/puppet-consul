@@ -83,7 +83,7 @@ class consul::params {
     $init_style = 'sysv'
   } elsif $::operatingsystem == 'windows' {
     $service_name = 'Consul'
-    $init_style = undef
+    $init_style = 'scm'
   } else {
     $init_style = undef
   }

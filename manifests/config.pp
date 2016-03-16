@@ -78,6 +78,9 @@ class consul::config(
           content => template('consul/consul.launchd.erb')
         }
       }
+      'scm' : {
+        notify { 'Windows machine, Consul will be managed by Service Control Manager via nssm':}
+      }
       default : {
         fail("I don't know how to create an init script for style ${consul::init_style}")
       }
