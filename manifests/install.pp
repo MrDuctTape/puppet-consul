@@ -13,12 +13,22 @@ class consul::install {
     }
   }
 
+  case $::operatingsystem {
+    'windows': {
+      $install_path = "C:/ProgramData/puppet-archive"
+    }
+    default: {
+      $install_path = "/opt/puppet-archive"
+    }
+  }
+
   case $consul::install_method {
     'url': {
       include '::archive'
-      archive { "consul-${consul::version}.${consul::download_extension}":
+      archive { "${install_path}/consul-${consul::version}.${consul::download_extension}":
         source => $consul::real_download_url,
       }
+
       #file { "${::staging::path}/consul-${consul::version}":
       #  ensure => directory,
       #}
