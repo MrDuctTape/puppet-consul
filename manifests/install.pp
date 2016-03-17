@@ -50,11 +50,11 @@ class consul::install {
 
         # The 'dist' dir was removed from the web_ui archive in Consul version 0.6.0
         if (versioncmp($::consul::version, '0.6.0') < 0) {
-          $archive_creates = "${consul::data_dir}/${consul::version}_web_ui/dist"
+          $archive_creates = "${install_path}/consul-${consul::version}_web_ui/dist"
           $ui_symlink_target = $archive_creates
         } else {
-          $archive_creates = "${consul::data_dir}/${consul::version}_web_ui/index.html"
-          $ui_symlink_target = "${consul::data_dir}/${consul::version}_web_ui"
+          $archive_creates = "${install_path}/consul-${consul::version}_web_ui/index.html"
+          $ui_symlink_target = "${install_path}/consul-${consul::version}_web_ui"
         }
 
         file { "${install_path}/consul-${consul::version}_web_ui":
