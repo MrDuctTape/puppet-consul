@@ -27,7 +27,8 @@ class consul::install {
       include '::archive'
       archive { "${install_path}/consul-${consul::version}.${consul::download_extension}":
         source  => $consul::real_download_url,
-        extract => true
+        extract => true,
+        extract_path  => '${install_path}/consul-${consul::version}',
       }
 
       #file { "${::staging::path}/consul-${consul::version}":
