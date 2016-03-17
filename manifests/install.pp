@@ -25,6 +25,9 @@ class consul::install {
   case $consul::install_method {
     'url': {
       include '::archive'
+      file { "${install_path}/consul-${consul::version}":
+        ensure => directory,
+      }->
       archive { "${install_path}/consul-${consul::version}.${consul::download_extension}":
         ensure        => present,
         source        => $consul::real_download_url,
