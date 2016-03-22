@@ -1,0 +1,28 @@
+
+
+## vars:
+$consulTargetDir = "<%= scope['consul::bin_dir'] %>" -replace "/", "\"
+$consulExe = "`"" + $consulTargetDir + "\consul.exe`""
+$consulConfig = "`"`"agent -config-dir=`"<%= scope['consul::config_dir'] %>`"`"" -replace "/", "\"
+$consulInstString = $consulExe + " " + $consulConfig
+$consulErrLog = $consulTargetDir + "\logs\consul-err.log"
+$consulStdLog = $consulTargetDir + "\logs\consul.log"
+
+## build service:
+<%= @nssm_exec %> install Consul $consulInstString
+<%= @nssm_exec %> set Consul AppDirectory $consulTargetDir
+<%= @nssm_exec %> set Consul DisplayName Consul
+<%= @nssm_exec %> set Consul AppStopMethodConsole 15000
+<%= @nssm_exec %> set Consul AppStopMethodSkip 2
+<%= @nssm_exec %> set Consul AppStopMethodSkip 4
+<%= @nssm_exec %> set Consul AppStderr $consulErrLog
+<%= @nssm_exec %> set Consul AppStdout $consulStdLog
+<%= @nssm_exec %> set Consul AppRotateFiles 1
+<%= @nssm_exec %> set Consul AppRotateOnline 0
+<%= @nssm_exec %> set Consul AppRotateBytes 1024000
+<%= @nssm_exec %> set Consul AppRestartDelay 0
+<%= @nssm_exec %> set Consul AppExit Default Exit
+<%= @nssm_exec %> set Consul Start SERVICE_AUTO_START
+
+## all done:
+exit 0

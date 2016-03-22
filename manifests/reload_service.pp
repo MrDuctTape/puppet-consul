@@ -19,11 +19,17 @@ class consul::reload_service {
       $rpc_addr = $consul::rpc_addr
     }
 
+    if $::operatingsystem == 'windows' {
+      $exec_provider = 'powershell'
+    }
+
     exec { 'reload consul service':
       path        => [$consul::bin_dir,'/bin','/usr/bin'],
-      command     => "consul reload -rpc-addr=${rpc_addr}:${consul::rpc_port}",
+      command     => "consul reload -rpc-addr ${rpc_addr}:${consul::rpc_port}",
       refreshonly => true,
       tries       => 3,
+      cwd         => $consul::bin_dir,
+      provider    => $exec_provider,
     }
   }
 
