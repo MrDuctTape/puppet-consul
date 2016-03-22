@@ -177,6 +177,7 @@ class consul (
     class { 'consul::windows_service':
       service_name   => $consul::params::service_name,
     } ->
+    class { 'consul::reload_service': } ->
     anchor {'consul_last': }
   } else {
     anchor {'consul_first': } ->
